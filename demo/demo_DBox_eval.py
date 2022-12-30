@@ -27,7 +27,7 @@ odmd_data = odmd.data_gen.DataGenerator(datagen_config)
 odmd_data.initialize_data_gen(camera_config)
 net, device, m_params = dbox.load_model(dbox_config, odmd_data.num_pos)
 bb2net = dbox.BoundingBoxToNetwork(m_params)
-model_dir = os.path.join("../results", "model", net_name)
+model_dir = os.path.join("..", "results", "model", net_name)
 model_list = sorted([pt for pt in os.listdir(model_dir) if pt.endswith(".pt")])
 net = dbox.load_weights(net, os.path.join(model_dir, model_list[model_idx]))
 
