@@ -2,8 +2,7 @@
 Demonstration of how to generate train DBox network on ODMD.
 """
 
-import sys, os, IPython, to
-rch
+import sys, os, IPython, torch
 file_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(file_dir)
 sys.path.insert(0,"../")
