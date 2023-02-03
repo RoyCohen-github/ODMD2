@@ -3,19 +3,24 @@ Demonstration of how to generate new training data on ODMD.
 """
 
 import sys, os, IPython, _pickle as pickle
+
+import yaml
+
 file_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(file_dir)
 sys.path.insert(0,"../")
 import odmd
 
 # Select configuration (more example settings from paper in config directory).
-datagen_config = "../config/data_gen/standard_data.yaml" 
-camera_config = "../config/camera/hsr_grasp_camera.yaml" 
+# datagen_config = "../config/data_gen/standard_data.yaml"
+datagen_config = "../config/data_gen/ODMS_paper_cfg.yaml"
+camera_config = "../config/camera/hsr_grasp_camera.yaml"
+training_config = "../config/train/train_demo.yaml"
 
 # Other data generation settings.
-n_examples = 20 # Configure for batch size if training.
-save_examples = False
-set_name = "example_data_gen"
+n_examples = 20 if training_config is None else yaml.full_load(open(training_config))['batch_size'] # Configure for batch size if training.
+save_examples = True
+set_name = "paper_data_gen"
 
 # Initiate data generator.
 odmd_data = odmd.data_gen.DataGenerator(datagen_config)
