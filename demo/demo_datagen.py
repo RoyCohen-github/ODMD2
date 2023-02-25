@@ -15,7 +15,7 @@ import odmd
 # datagen_config = "../config/data_gen/standard_data.yaml"
 datagen_config = "../config/data_gen/ODMS_paper_cfg.yaml"
 camera_config = "../config/camera/hsr_grasp_camera.yaml"
-training_config = "../config/train/train_demo.yaml"
+training_config = "../config/train/paper_train.yaml"
 
 # Other data generation settings.
 n_examples = 20 if training_config is None else yaml.full_load(open(training_config))['batch_size'] # Configure for batch size if training.

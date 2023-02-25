@@ -8,7 +8,7 @@ os.chdir(file_dir)
 sys.path.insert(0,"../")
 import odmd, dbox
 
-net_name = "DBox_demo"
+net_name = "DBox_paper"
 #net_name = "DBox_pretrained" # Uncomment to run DBox model from paper.
 model_idx = -1 # Can cycle through indices to find best validation performance.
 
@@ -17,9 +17,9 @@ dataset = "odmd" # or "odms_detection" for ODMS dataset converted to detection.
 eval_set = "val" # or "test" once model training and development are complete.
 
 # Select configuration (more example settings from paper in config directory).
-datagen_config = "../config/data_gen/standard_data.yaml" 
+datagen_config = "../config/data_gen/ODMS_paper_cfg.yaml"
 camera_config = "../config/camera/hsr_grasp_camera.yaml" 
-train_config = "../config/train/train_demo.yaml"
+train_config = "../config/train/paper_train.yaml"
 dbox_config = "../config/model/DBox.yaml"
 
 # Initiate data generator, model, data loader, and load weights.
@@ -27,7 +27,7 @@ odmd_data = odmd.data_gen.DataGenerator(datagen_config)
 odmd_data.initialize_data_gen(camera_config)
 net, device, m_params = dbox.load_model(dbox_config, odmd_data.num_pos)
 bb2net = dbox.BoundingBoxToNetwork(m_params)
-model_dir = os.path.join("..", "results", "model", net_name)
+model_dir = os.path.join("..", "results", "model", net_name, "snps")
 model_list = sorted([pt for pt in os.listdir(model_dir) if pt.endswith(".pt")])
 net = dbox.load_weights(net, os.path.join(model_dir, model_list[model_idx]))
 
