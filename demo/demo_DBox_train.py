@@ -15,6 +15,7 @@ net_name = "DBox_peper" # to save intermidiate net results.
 datagen_config = "../config/data_gen/ODMS_paper_cfg.yaml" # standard_data.yaml"
 camera_config = "../config/camera/hsr_grasp_camera.yaml" 
 train_config = "../config/train/paper_train.yaml"
+# train_config = "../config/train/tmp_train.yaml"
 dbox_config = "../config/model/DBox.yaml"
 
 # Initiate data generator, model, training parameters, and data loader.
@@ -28,8 +29,8 @@ bb2net = dbox.BoundingBoxToNetwork(m_params, train["batch_size"])
 model_dir = os.path.join("../results", "model", net_name)
 snps_dir = os.path.join(model_dir, "snps")
 status_dir = os.path.join(model_dir, "status")
-os.makedirs(snps_dir, exist_ok=False)
-os.makedirs(status_dir, exist_ok=False)
+os.makedirs(snps_dir, exist_ok=True if 'tmp' in train_config else False)
+os.makedirs(status_dir, exist_ok=True if 'tmp' in train_config else False)
 criterion = torch.nn.L1Loss()
 optimizer = torch.optim.Adam(net.parameters(), lr=0.001, weight_decay=0) # TODO - move to training cfg
 
