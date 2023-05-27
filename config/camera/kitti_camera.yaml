@@ -1,0 +1,6 @@
+camera_name: Kitti camera
+image_dim: [1242, 375]
+fx: 188
+fy: 188
+cx: 621
+cy: 188
