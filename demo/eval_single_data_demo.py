@@ -14,7 +14,7 @@ import odmd, dbox
 #####################################  example #############################################################
 ############################################################################################################
 
-detectron_output = [
+all_detectron_output = [
     [1664.0343017578125,
      2211.4384765625,
      1846.2708740234375,
@@ -63,15 +63,15 @@ detectron_output = [
     [1475.8773193359375,
      2818.90771484375,
      2147.44287109375,
-     3889.684814453125]
+     3889.684814453125],
 
-    # [1339.128662109375,
-    # 3047.27978515625,
-    # 2270.5,
-    # 4581.2373046875],
+    [1339.128662109375,
+    3147.27978515625,
+    2170.5,
+    4381.2373046875],
 ]
 
-camera_positions = [
+all_camera_positions = [
     [0, 0, 11],
     [0, 0, 10],
     [0, 0, 9],
@@ -81,10 +81,23 @@ camera_positions = [
     [0, 0, 5],
     [0, 0, 4],
     [0, 0, 3],
-    [0, 0, 2]
-    # [0, 0, 1]
+    [0, 0, 2],
+    [0, 0, 1]
 ]
 
+all_meas_idx = np.arange(len(all_camera_positions))
+# np.random.shuffle(all_meas_idx)
+# selected_measurements = sorted(all_meas_idx[:10], reverse=np.random.randint(0, 2))
+selected_measurements = sorted(all_meas_idx[0:10], reverse=1)
+print(f"selected measurements {selected_measurements}")
+
+detection_output = np.asarray([all_detectron_output[idx] for idx in selected_measurements])
+camera_positions = np.asarray([all_camera_positions[idx] for idx in selected_measurements])
+
+# add noise to account for incorrect estimation
+# detection_output = detection_output + np.random.normal(scale=(detection_output.max()-detection_output.min())*0.00, size=detection_output.shape)
+# camera_positions = camera_positions + camera_positions*np.random.normal(scale=(camera_positions.max()-camera_positions.min())*0.025, size=camera_positions.shape)
+# print(camera_positions)
 ############################################################################################################
 ############################################################################################################
 ############################################################################################################
@@ -138,10 +151,10 @@ for pos in range(bb_3D['n_positions']):
 bb_3D['camera_movement'] = (bb_3D['positions'][-1] - bb_3D['positions'])[:-1]
 
 for pos in range(bb['n_positions']):
-    bb['bboxes'][pos][0][0] = (detectron_output[pos][0]) / bb['image_dim'][1]
-    bb['bboxes'][pos][1][0] = (detectron_output[pos][1]) / bb['image_dim'][0]
-    bb['bboxes'][pos][2][0] = (detectron_output[pos][2] - detectron_output[pos][0]) / bb['image_dim'][1]
-    bb['bboxes'][pos][3][0] = (detectron_output[pos][3] - detectron_output[pos][1]) / bb['image_dim'][0]
+    bb['bboxes'][pos][0][0] = (detection_output[pos][0]) / bb['image_dim'][1]
+    bb['bboxes'][pos][1][0] = (detection_output[pos][1]) / bb['image_dim'][0]
+    bb['bboxes'][pos][2][0] = (detection_output[pos][2] - detection_output[pos][0]) / bb['image_dim'][1]
+    bb['bboxes'][pos][3][0] = (detection_output[pos][3] - detection_output[pos][1]) / bb['image_dim'][0]
     bb['bboxes'][pos][4][0] = bb_3D['positions'][pos][2][0]
 bb['bboxes'] = bb['bboxes'].astype(type(0.42507987308062717))
 
